@@ -36,22 +36,20 @@
 
 ```mermaid
 flowchart LR
-    subgraph Public["🌍 Public internet"]
-        C[Client]
-    end
+    C["🌍 Client"]
 
     subgraph Container["Container — only port 3000 is exposed"]
-        N["nginx :3000\n(the ONLY public bind)"]
-        D["xray direct inbound\n127.0.0.1:8080"]
-        P["3x-ui panel\n127.0.0.1:2053"]
+        N["nginx :3000<br/>the ONLY public bind"]
+        D["xray direct inbound<br/>127.0.0.1:8080"]
+        P["3x-ui panel<br/>127.0.0.1:2053"]
 
         subgraph Countries["Per-country isolated stacks (verified only)"]
             direction TB
-            I1["xray inbound /in1\n127.0.0.1:8081"] --> T1["Tor instance: de\nSOCKS 127.0.0.1:9052"]
-            I2["xray inbound /in2\n127.0.0.1:8082"] --> T2["Tor instance: fr\nSOCKS 127.0.0.1:9053"]
+            I1["xray inbound /in1<br/>127.0.0.1:8081"] --> T1["Tor instance: de<br/>SOCKS 127.0.0.1:9052"]
+            I2["xray inbound /in2<br/>127.0.0.1:8082"] --> T2["Tor instance: fr<br/>SOCKS 127.0.0.1:9053"]
         end
 
-        N -->|"/"  "/direct"| D
+        N -->|"/ and /direct"| D
         N -->|"/managepanel/"| P
         N -->|"/in1"| I1
         N -->|"/in2"| I2
